@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "npm:@biomejs/biome@^2.0.0-beta.1": "2.0.0-beta.1",
     "npm:@libsql/client@0.14": "0.14.0",
     "npm:@sveltejs/adapter-auto@4": "4.0.0_@sveltejs+kit@2.20.7__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.27.1____acorn@8.14.1___vite@6.3.1____picomatch@4.0.2__svelte@5.27.1___acorn@8.14.1__vite@6.3.1___picomatch@4.0.2_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.27.1___acorn@8.14.1__vite@6.3.1___picomatch@4.0.2_svelte@5.27.1__acorn@8.14.1_vite@6.3.1__picomatch@4.0.2",
     "npm:@sveltejs/kit@^2.16.0": "2.20.7_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.27.1___acorn@8.14.1__vite@6.3.1___picomatch@4.0.2_svelte@5.27.1__acorn@8.14.1_vite@6.3.1__picomatch@4.0.2",
@@ -19,6 +20,43 @@
         "@jridgewell/gen-mapping",
         "@jridgewell/trace-mapping"
       ]
+    },
+    "@biomejs/biome@2.0.0-beta.1": {
+      "integrity": "sha512-MqRoy9CbTkrS45zW+S4u8p4kQUIFx0mGUWi789W1R3b1kXYIudEqsTKgXKtTGsI0kWOlvnjuKqwTrabjaGchhQ==",
+      "dependencies": [
+        "@biomejs/cli-darwin-arm64",
+        "@biomejs/cli-darwin-x64",
+        "@biomejs/cli-linux-arm64",
+        "@biomejs/cli-linux-arm64-musl",
+        "@biomejs/cli-linux-x64",
+        "@biomejs/cli-linux-x64-musl",
+        "@biomejs/cli-win32-arm64",
+        "@biomejs/cli-win32-x64"
+      ]
+    },
+    "@biomejs/cli-darwin-arm64@2.0.0-beta.1": {
+      "integrity": "sha512-RaGmpNLl5NFooXaoCwvgvcuU6Am/rMZ3R48pQeCVxjrCcz1BIlKLTai5UosiedazW7JbXAvgXdSNizYG7ITlAQ=="
+    },
+    "@biomejs/cli-darwin-x64@2.0.0-beta.1": {
+      "integrity": "sha512-sTzSshkne7HKZFNfiIhmAji7gjtCBXvkTujZELCZWIZC7oj1Tjw/gvAzbdFj2UyHd5/i90pND4ybFOLQZm9gpg=="
+    },
+    "@biomejs/cli-linux-arm64-musl@2.0.0-beta.1": {
+      "integrity": "sha512-0MPUKzz9uBBxAYSJ+OlFi4+yGwiRcZeFqq39H0MxXCQ9MMpKJFH2Ek72fw8sXwG7Prn7EsW/3u1b7najyn1XGQ=="
+    },
+    "@biomejs/cli-linux-arm64@2.0.0-beta.1": {
+      "integrity": "sha512-bxce2O4nooBmp20Ey0+IFIZyy/b0RVnciIQk9euCfAi9evq7SvFtMBYo3YUZej0KIvrau5H7tJk5OqmRJk2l+g=="
+    },
+    "@biomejs/cli-linux-x64-musl@2.0.0-beta.1": {
+      "integrity": "sha512-dFvisnP1hFpVILNw0PZfs8piBwe8+aykO04Tb/4AJDVVzKkGgJfwSefwo4jqzO/Wk/Zruvhcp1nKbjgRXM+vDg=="
+    },
+    "@biomejs/cli-linux-x64@2.0.0-beta.1": {
+      "integrity": "sha512-6P/AtJv4hOH8mu8ez0c4UInUpiet9NEoF25+O7OPyb4w6ZHJMp2qzvayJS7TKrTQzE5KUvSiNsACGRz34DzUkg=="
+    },
+    "@biomejs/cli-win32-arm64@2.0.0-beta.1": {
+      "integrity": "sha512-0C9YSqWHf2cJGnjKDbLi49xv6H9IfqbDsFav7X557PqwY64O6IKWqcmZzi/PkDFHjQM9opU6uhKapeGKGDxziQ=="
+    },
+    "@biomejs/cli-win32-x64@2.0.0-beta.1": {
+      "integrity": "sha512-o8W6+DX0YRjt1kS8Y3ismq6EkjwiVDv7X0TEpfnFywoVG8HoJ7G7/m9r8LM1yE46WI3maPH2A0MoVpQ1ZNG++A=="
     },
     "@drizzle-team/brocli@0.10.2": {
       "integrity": "sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w=="
@@ -903,6 +941,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@biomejs/biome@^2.0.0-beta.1",
         "npm:@libsql/client@0.14",
         "npm:@sveltejs/adapter-auto@4",
         "npm:@sveltejs/kit@^2.16.0",
