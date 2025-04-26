@@ -1,42 +1,48 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import { SignedIn, SignedOut } from "svelte-clerk";
 </script>
 
 <section class="mobile-landing">
-    <div class="logo"></div>
-    <h1 class="title">Health Quest</h1>
-    <p class="tagline">
-        Turn self-care into an adventure. Complete missions, earn rewards, and
-        level up your wellbeing!
-    </p>
+    <SignedIn>
+        <div class="logo"></div>
+        <h1 class="title">Health Quest</h1>
+        <p class="tagline">
+            Turn self-care into an adventure. Complete missions, earn rewards,
+            and level up your wellbeing!
+        </p>
 
-    <div class="features">
-        <div class="feature">
-            <span class="feature-icon">💧</span>
-            <span class="feature-text">Hydration</span>
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">💧</span>
+                <span class="feature-text">Hydration</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🧘</span>
+                <span class="feature-text">Meditation</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📝</span>
+                <span class="feature-text">Journal</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✨</span>
+                <span class="feature-text">Affirmations</span>
+            </div>
         </div>
-        <div class="feature">
-            <span class="feature-icon">🧘</span>
-            <span class="feature-text">Meditation</span>
-        </div>
-        <div class="feature">
-            <span class="feature-icon">📝</span>
-            <span class="feature-text">Journal</span>
-        </div>
-        <div class="feature">
-            <span class="feature-icon">✨</span>
-            <span class="feature-text">Affirmations</span>
-        </div>
-    </div>
+    </SignedIn>
 
-    <div class="button-group">
-        <button class="btn primary" on:click={() => goto("./sign-in")}>
-            Login
-        </button>
-        <button class="btn secondary" on:click={() => goto("./sign-up")}>
-            Create Account
-        </button>
-    </div>
+    <SignedOut>
+        <div class="button-group">
+            <button class="btn primary" on:click={() => goto("./sign-in")}>
+                Login
+            </button>
+            <button class="btn secondary" on:click={() => goto("./sign-up")}>
+                Create Account
+            </button>
+        </div>
+    </SignedOut>
+    >>>>>>> main
 </section>
 
 <style>
@@ -63,7 +69,7 @@
         font-size: 2.5rem;
         font-weight: 800;
         margin-bottom: 0.5rem;
-        background: var(--gradient-primary);
+        background: linear-gradient(135deg, #34d399, #6366f1);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
