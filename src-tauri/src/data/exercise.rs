@@ -1,0 +1,98 @@
+use chrono::{DateTime, Duration, Local};
+use native_db::{native_db, Database, Key, ToKey};
+use native_model::{native_model, Model};
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum ExerciseType {
+    Walk,
+    Hike,
+    Gym,
+}
+
+/// TODO: make another primary key
+#[derive(Serialize, Deserialize, Debug)]
+#[native_model(id = 1, version = 1)]
+#[native_db]
+pub struct Exercise {
+    #[primary_key]
+    pub exercise_type: ExerciseType,
+    pub age: i32,
+    pub datetime: DateTime<Local>,
+    pub duration: Duration,
+}
+
+impl ToKey for ExerciseType {
+    fn to_key(&self) -> Key {
+        match self {
+            ExerciseType::Walk => Key::new(vec![0u8]),
+            ExerciseType::Hike => Key::new(vec![1u8]),
+            ExerciseType::Gym => Key::new(vec![2u8]),
+        }
+    }
+
+    fn key_names() -> Vec<String> {
+        vec!["exercise_type".into()]
+    }
+}
+
+fn _add_exercise(exercise: Exercise, db: &Database) -> Result<(), String> {
+    log::info!("Adding exercise: {:?}", exercise);
+    let rw = db
+        .rw_transaction()
+        .expect("Failed to create a rw transaction");
+    rw.insert(exercise).expect("Failed to save exercise");
+    rw.commit().expect("failed to commit");
+    Ok(())
+}
+
+/// TODO: Finish this function that will give you all exercises
+fn _read_exercise() -> Vec<Exercise> {
+    todo!()
+}
+
+#[tauri::command]
+pub fn add_exercise(exercise: Exercise, db: tauri::State<Database>) -> Result<(), String> {
+    log::info!("Adding exercise: {:?}", exercise);
+    _add_exercise(exercise, db.inner())
+}
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn test_simple_insertions() {
+        let db = native_db::Builder::new()
+            .create_in_memory(&crate::data::DATABASE_MODELS)
+            .unwrap();
+
+        super::_add_exercise(
+            super::Exercise {
+                exercise_type: super::ExerciseType::Walk,
+                age: 30,
+                datetime: chrono::Local::now(),
+                duration: chrono::Duration::seconds(3600),
+            },
+            &db,
+        )
+        .unwrap();
+    }
+
+    #[test]
+    fn test_simple_read() {
+        let db = native_db::Builder::new()
+            .create_in_memory(&crate::data::DATABASE_MODELS)
+            .unwrap();
+
+        super::_add_exercise(
+            super::Exercise {
+                exercise_type: super::ExerciseType::Walk,
+                age: 30,
+                datetime: chrono::Local::now(),
+                duration: chrono::Duration::seconds(3600),
+            },
+            &db,
+        )
+        .unwrap();
+        todo!("Continue finish this test");
+    }
+}
