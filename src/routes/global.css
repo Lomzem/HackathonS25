@@ -10,36 +10,12 @@
 
 :root {
     --font-family: "Inter", sans-serif;
-    --color-background: 0 0% 100%;
-    --color-foreground: 222.2 84% 4.9%;
-  
-    --color-card: 0 0% 100%;
-    --color-card-foreground: 222.2 84% 4.9%;
-  
-    --color-popover: 0 0% 100%;
-    --color-popover-foreground: 222.2 84% 4.9%;
-  
-    --color-primary: 222.2 47.4% 11.2%;
-    --color-primary-foreground: 210 40% 98%;
-  
-    --color-secondary: 210 40% 96.1%;
-    --color-secondary-foreground: 222.2 47.4% 11.2%;
-  
-    --color-muted: 210 40% 96.1%;
-    --color-muted-foreground: 215.4 16.3% 46.9%;
-  
-    --color-accent: 210 40% 96.1%;
-    --color-accent-foreground: 222.2 47.4% 11.2%;
-  
-    --color-destructive: 0 84.2% 60.2%;
-    --color-destructive-foreground: 210 40% 98%;
-  
-    --color-border: 214.3 31.8% 91.4%;
-    --color-input: 214.3 31.8% 91.4%;
-    --color-ring: 222.2 84% 4.9%;
-  
     --border-radius: 1rem;
-  
+    --gradient-primary: linear-gradient(135deg, #34d399, #6366f1);
+    --gradient-background: linear-gradient(135deg, hsl(190, 85%, 93%), hsl(250, 85%, 93%));
+    --color-card: rgba(255, 255, 255, 0.7);
+    --color-primary: #6366f1;
+    --color-secondary: hsl(222.2 47.4% 11.2%);
 }
 
 body {
@@ -48,4 +24,14 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-family: var(--font-family);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
