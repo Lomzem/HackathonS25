@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { SignedIn, SignedOut, SignInButton, UserButton } from 'svelte-clerk';
 	import { goto } from '$app/navigation';
 </script>
@@ -104,4 +104,4 @@
 		padding: 0.25rem 0.5rem;
 	}
 }
-</style>
+</style> -->

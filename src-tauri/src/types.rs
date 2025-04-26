@@ -4,7 +4,7 @@ use native_db::ToKey;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Id(Uuid);
 
 impl Deref for Id {
