@@ -17,7 +17,7 @@ pub enum Category {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-#[native_model(id = 1, version = 1)]
+#[native_model(id = 3, version = 1)]
 #[native_db]
 pub struct Affirmation {
     #[primary_key]
@@ -28,7 +28,7 @@ pub struct Affirmation {
 }
 
 impl Affirmation {
-    fn defaults() -> Vec<Self> {
+    pub fn defaults() -> Vec<Self> {
         vec![
             // Self-Love & Confidence
             Self {
@@ -61,7 +61,6 @@ impl Affirmation {
                 text: "My self-worth is not defined by others' opinions.".into(),
                 is_favorite: false,
             },
-
             // Success & Abundance
             Self {
                 id: Uuid::new_v4().into(),
@@ -93,7 +92,6 @@ impl Affirmation {
                 text: "I am in control of my destiny.".into(),
                 is_favorite: false,
             },
-
             // Health & Wellness
             Self {
                 id: Uuid::new_v4().into(),
@@ -125,7 +123,6 @@ impl Affirmation {
                 text: "I am grateful for my vitality and well-being.".into(),
                 is_favorite: false,
             },
-
             // Positivity & Gratitude
             Self {
                 id: Uuid::new_v4().into(),
@@ -157,7 +154,6 @@ impl Affirmation {
                 text: "I am a magnet for good things.".into(),
                 is_favorite: false,
             },
-
             // Courage & Resilience
             Self {
                 id: Uuid::new_v4().into(),
@@ -189,7 +185,6 @@ impl Affirmation {
                 text: "I am unstoppable.".into(),
                 is_favorite: false,
             },
-
             // Relationships & Love
             Self {
                 id: Uuid::new_v4().into(),
@@ -221,7 +216,6 @@ impl Affirmation {
                 text: "My heart is open to giving and receiving love.".into(),
                 is_favorite: false,
             },
-
             // Creativity & Focus
             Self {
                 id: Uuid::new_v4().into(),
@@ -253,7 +247,6 @@ impl Affirmation {
                 text: "My potential is limitless.".into(),
                 is_favorite: false,
             },
-
             // Letting Go & Trusting the Process
             Self {
                 id: Uuid::new_v4().into(),
@@ -316,14 +309,14 @@ pub fn list_affirmations_by_category(
     category: Category,
     db: tauri::State<Database>,
 ) -> Result<Vec<Affirmation>, String> {
-    log::info!("Listing affirmations by category: {:?}", category);
-    
+    log::info!("Listing affirmations by category: {category:?}");
+
     let affirmations = _list_affirmations(db.inner())?;
     let filtered = affirmations
         .into_iter()
         .filter(|a| a.category == category)
         .collect();
-    
+
     Ok(filtered)
 }
 
@@ -362,46 +355,46 @@ pub fn toggle_fav_affirmation(id: Id, db: tauri::State<Database>) -> Result<(), 
 pub fn get_random_affirmation(db: tauri::State<Database>) -> Result<Affirmation, String> {
     log::info!("Getting a random affirmation");
     let affirmations = _list_affirmations(db.inner())?;
-    
+
     if affirmations.is_empty() {
         return Err("No affirmations found".to_string());
     }
-    
-    let mut rng = rand::thread_rng();
-    let index = rand::Rng::gen_range(&mut rng, 0..affirmations.len());
-    
+
+    let mut rng = rand::rng();
+    let index = rand::Rng::random_range(&mut rng, 0..affirmations.len());
+
     Ok(affirmations[index].clone())
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    
+
     #[test]
     fn test_list_affirmations() {
         let db = native_db::Builder::new()
             .create_in_memory(&crate::data::DATABASE_MODELS)
             .unwrap();
-            
+
         // Initialize with defaults
         let defaults = Affirmation::defaults();
-        
+
         let rw = db.rw_transaction().unwrap();
         for affirmation in defaults.clone() {
             rw.insert(affirmation).unwrap();
         }
         rw.commit().unwrap();
-        
+
         let result = _list_affirmations(&db).unwrap();
         assert_eq!(result.len(), defaults.len());
     }
-    
+
     #[test]
     fn test_toggle_favorite() {
         let db = native_db::Builder::new()
             .create_in_memory(&crate::data::DATABASE_MODELS)
             .unwrap();
-            
+
         // Insert a test affirmation
         let affirmation = Affirmation {
             id: Uuid::new_v4().into(),
@@ -409,14 +402,14 @@ mod test {
             text: "Test affirmation".into(),
             is_favorite: false,
         };
-        
+
         let rw = db.rw_transaction().unwrap();
         rw.insert(affirmation.clone()).unwrap();
         rw.commit().unwrap();
-        
+
         // Toggle favorite
-        _toggle_fav_affirmation(affirmation.id, &db).unwrap();
-        
+        _toggle_fav_affirmation(affirmation.id.clone(), &db).unwrap();
+
         // Check that it's toggled
         let r = db.r_transaction().unwrap();
         let updated: Affirmation = r.get().primary(affirmation.id).unwrap().unwrap();
