@@ -42,7 +42,6 @@
             </button>
         </div>
     </SignedOut>
-    >>>>>>> main
 </section>
 
 <style>
