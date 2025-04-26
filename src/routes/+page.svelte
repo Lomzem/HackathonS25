@@ -53,11 +53,7 @@
         justify-content: center;
         align-items: center;
         padding: 1.5rem;
-        background: linear-gradient(
-            135deg,
-            hsl(190, 85%, 93%),
-            hsl(250, 85%, 93%)
-        );
+        background: var(--gradient-background);
         color: hsl(var(--color-foreground));
         text-align: center;
     }
@@ -100,7 +96,7 @@
         flex-direction: column;
         align-items: center;
         width: calc(50% - 0.75rem);
-        background: rgba(255, 255, 255, 0.7);
+        background: var(--color-card);
         border-radius: 1rem;
         padding: 1rem 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -140,8 +136,8 @@
     }
 
     .btn.primary {
-        background: linear-gradient(135deg, #34d399, #6366f1);
-        color: white;
+        background: var(--gradient-primary);
+        color: var(--color-primary);
         box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
     }
 
