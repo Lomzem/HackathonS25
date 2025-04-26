@@ -1,8 +1,8 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-    "productName": "health-quest",
+    "productName": "mind-quest",
     "version": "0.1.0",
-    "identifier": "com.health-quest",
+    "identifier": "com.mind-quest",
     "build": {
         "frontendDist": "../build",
         "devUrl": "http://localhost:1420",
