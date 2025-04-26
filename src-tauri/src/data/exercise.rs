@@ -3,7 +3,7 @@ use native_db::{native_db, Database, Key, ToKey};
 use native_model::{native_model, Model};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum ExerciseType {
     Walk,
     Hike,
@@ -11,7 +11,7 @@ pub enum ExerciseType {
 }
 
 /// TODO: make another primary key
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[native_model(id = 1, version = 1)]
 #[native_db]
 pub struct Exercise {
@@ -47,8 +47,20 @@ fn _add_exercise(exercise: Exercise, db: &Database) -> Result<(), String> {
 }
 
 /// TODO: Finish this function that will give you all exercises
-fn _read_exercise() -> Vec<Exercise> {
-    todo!()
+fn _read_exercise(db: &Database) -> Vec<Exercise> {
+    log::info!("Reading exercises");
+    let r = db
+        .r_transaction()
+        .expect("Failed to create a r transaction");
+    let exercises: Vec<Exercise> = r
+        .scan()
+        .primary()
+        .expect("Failed to scan exercises")
+        .all()
+        .expect("Failed to get all exercises")
+        .map(|result| result.expect("Failed to get exercise"))
+        .collect();
+    exercises
 }
 
 #[tauri::command]
@@ -93,6 +105,16 @@ mod test {
             &db,
         )
         .unwrap();
-        todo!("Continue finish this test");
+        super::_read_exercise(&db);
+        assert_eq!(super::_read_exercise(&db).len(), 1);
+        assert_eq!(
+            super::_read_exercise(&db)[0],
+            super::Exercise {
+                exercise_type: super::ExerciseType::Walk,
+                age: 30,
+                datetime: chrono::Local::now(),
+                duration: chrono::Duration::seconds(3600),
+            }
+        );
     }
 }
