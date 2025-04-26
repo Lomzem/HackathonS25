@@ -1,4 +1,7 @@
 mod data;
+use data::affirmations::{get_random_affirmation, list_affirmations, list_affirmations_by_category, toggle_fav_affirmation};
+use data::exercise::add_exercise;
+use native_db::{Database, Models};
 use tauri_plugin_fs::FsExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -19,6 +22,43 @@ pub fn run() {
                 .expect("Cannot get scope");
             Ok(())
         })
+        .manage(create_db())
+        .invoke_handler(tauri::generate_handler![
+            add_exercise,
+            list_affirmations,
+            list_affirmations_by_category,
+            toggle_fav_affirmation,
+            get_random_affirmation
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn create_db() -> Database {
+    let db_path = std::path::Path::new("mind-quest.db");
+    
+    let db = if db_path.exists() {
+        log::info!("Opening existing database");
+        native_db::Builder::new()
+            .open(db_path, &data::DATABASE_MODELS)
+            .expect("Failed to open database")
+    } else {
+        log::info!("Creating new database");
+        let db = native_db::Builder::new()
+            .create(db_path, &data::DATABASE_MODELS)
+            .expect("Failed to create database");
+        
+        // Initialize with default affirmations
+        let affirmations = data::affirmations::Affirmation::defaults();
+        let rw = db.rw_transaction().expect("Failed to create rw transaction");
+        
+        for affirmation in affirmations {
+            rw.insert(affirmation).expect("Failed to insert affirmation");
+        }
+        
+        rw.commit().expect("Failed to commit transaction");
+        db
+    };
+    
+    db
 }
