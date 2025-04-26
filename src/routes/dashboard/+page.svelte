@@ -303,484 +303,448 @@
     ];
 </script>
 
-<div class="phone-container">
-    <!-- Status bar -->
-    <div class="status-bar">
-        <div class="time">{currentTime}</div>
-        <div class="status-icons">
-            <i class="fas fa-signal"></i>
-            <i class="fas fa-wifi"></i>
-            <i class="fas fa-battery-full"></i>
+<div class="app-container">
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" aria-hidden="true">🩺</div>
+            <h1 class="title">Health Quest</h1>
         </div>
+        <div class="header-right">
+            <SignedOut>
+                <SignInButton>
+                    <button class="btn sign-in">Sign In</button>
+                </SignInButton>
+            </SignedOut>
+            <SignedIn>
+                <div class="user-stats">
+                    <div class="stat" title="Points">
+                        <span class="icon">⭐</span>
+                        <span>{progressData.points}</span>
+                    </div>
+                    <div class="stat" title="Streak">
+                        <span class="icon">🔥</span>
+                        <span>{progressData.streak}</span>
+                    </div>
+                    <div
+                        class="stat user-level"
+                        title="Level {progressData.level}"
+                    >
+                        <span>Lvl {progressData.level}</span>
+                    </div>
+                </div>
+                <UserButton />
+            </SignedIn>
+        </div>
+    </header>
+
+    <section class="section card level-card">
+        <div class="level-header">
+            <h3>Level {progressData.level}</h3>
+            <span>{progressData.points}/{progressData.nextLevelPoints} XP</span>
+        </div>
+        <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuenow={progressData.points}
+            aria-valuemin="0"
+            aria-valuemax={progressData.nextLevelPoints}
+        >
+            <div class="fill" style:width="{levelProgress}%"></div>
+            <div class="glow" style:width="{levelProgress}%"></div>
+        </div>
+    </section>
+
+    <section class="section card mood-card">
+        <h3>How are you feeling today?</h3>
+        <div class="mood-selection">
+            {#each moodOptions as mood}
+                <button
+                    class="mood-option {currentMood === mood.label
+                        ? 'selected'
+                        : ''}"
+                    style:background={currentMood === mood.label
+                        ? mood.color
+                        : "transparent"}
+                    on:click={() => setMood(mood)}
+                >
+                    <span class="mood-emoji">{mood.emoji}</span>
+                    <span class="mood-label">{mood.label}</span>
+                </button>
+            {/each}
+        </div>
+    </section>
+
+    <section class="section card progress-card">
+        <div class="header-row">
+            <h3>Daily Quest Progress</h3>
+            <span class="counter"
+                >{progressData.completed}/{progressData.total}</span
+            >
+        </div>
+        <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuenow={progressData.completed}
+            aria-valuemin="0"
+            aria-valuemax={progressData.total}
+        >
+            <div class="fill" style:width="{progressWidth}%"></div>
+            <div class="glow" style:width="{progressWidth}%"></div>
+        </div>
+        <div class="markers">
+            {#each Array(progressData.total) as _, i}
+                <div
+                    class="marker {i < progressData.completed ? 'done' : ''}"
+                    aria-hidden="true"
+                ></div>
+            {/each}
+        </div>
+        <div class="stats-row">
+            <div class="stat-row">
+                <i class="fas fa-fire"></i> Streak: {progressData.streak}d
+            </div>
+            <div class="stat-row">
+                <i class="fas fa-gem"></i> Points: {progressData.points}
+            </div>
+        </div>
+    </section>
+
+    <div class="tabs">
+        <button
+            class="tab {selectedTab === 'today' ? 'active' : ''}"
+            on:click={() => (selectedTab = "today")}
+        >
+            Today's Missions
+        </button>
+        <button
+            class="tab {selectedTab === 'completed' ? 'active' : ''}"
+            on:click={() => (selectedTab = "completed")}
+        >
+            Completed
+        </button>
+        <button
+            class="tab {selectedTab === 'upcoming' ? 'active' : ''}"
+            on:click={() => (selectedTab = "upcoming")}
+        >
+            Upcoming
+        </button>
     </div>
 
-    <div class="app-container">
-        <header class="header">
-            <div class="header-left">
-                <div class="logo" aria-hidden="true">🩺</div>
-                <h1 class="title">Health Quest</h1>
-            </div>
-            <div class="header-right">
-                <SignedOut>
-                    <SignInButton>
-                        <button class="btn sign-in">Sign In</button>
-                    </SignInButton>
-                </SignedOut>
-                <SignedIn>
-                    <div class="user-stats">
-                        <div class="stat" title="Points">
-                            <span class="icon">⭐</span>
-                            <span>{progressData.points}</span>
-                        </div>
-                        <div class="stat" title="Streak">
-                            <span class="icon">🔥</span>
-                            <span>{progressData.streak}</span>
-                        </div>
-                        <div
-                            class="stat user-level"
-                            title="Level {progressData.level}"
-                        >
-                            <span>Lvl {progressData.level}</span>
-                        </div>
-                    </div>
-                    <UserButton />
-                </SignedIn>
-            </div>
-        </header>
-
-        <section class="section card level-card">
-            <div class="level-header">
-                <h3>Level {progressData.level}</h3>
-                <span
-                    >{progressData.points}/{progressData.nextLevelPoints} XP</span
-                >
-            </div>
-            <div
-                class="progress-bar"
-                role="progressbar"
-                aria-valuenow={progressData.points}
-                aria-valuemin="0"
-                aria-valuemax={progressData.nextLevelPoints}
-            >
-                <div class="fill" style:width="{levelProgress}%"></div>
-                <div class="glow" style:width="{levelProgress}%"></div>
-            </div>
-        </section>
-
-        <section class="section card mood-card">
-            <h3>How are you feeling today?</h3>
-            <div class="mood-selection">
-                {#each moodOptions as mood}
-                    <button
-                        class="mood-option {currentMood === mood.label
-                            ? 'selected'
-                            : ''}"
-                        style:background={currentMood === mood.label
-                            ? mood.color
-                            : "transparent"}
-                        on:click={() => setMood(mood)}
-                    >
-                        <span class="mood-emoji">{mood.emoji}</span>
-                        <span class="mood-label">{mood.label}</span>
-                    </button>
-                {/each}
-            </div>
-        </section>
-
-        <section class="section card progress-card">
-            <div class="header-row">
-                <h3>Daily Quest Progress</h3>
-                <span class="counter"
-                    >{progressData.completed}/{progressData.total}</span
-                >
-            </div>
-            <div
-                class="progress-bar"
-                role="progressbar"
-                aria-valuenow={progressData.completed}
-                aria-valuemin="0"
-                aria-valuemax={progressData.total}
-            >
-                <div class="fill" style:width="{progressWidth}%"></div>
-                <div class="glow" style:width="{progressWidth}%"></div>
-            </div>
-            <div class="markers">
-                {#each Array(progressData.total) as _, i}
+    {#if selectedTab === "today"}
+        <section class="section mission-section" transition:fade>
+            <div class="missions-grid">
+                {#each todaysMissions as mission}
                     <div
-                        class="marker {i < progressData.completed
-                            ? 'done'
-                            : ''}"
-                        aria-hidden="true"
-                    ></div>
+                        class="mission-item"
+                        on:click={() => openMissionDetails(mission)}
+                        on:keydown={(e) =>
+                            e.key === "Enter" && openMissionDetails(mission)}
+                        tabindex="0"
+                        role="button"
+                        aria-label="View details for {mission.title}"
+                    >
+                        <div class="m-icon" style:background={mission.color}>
+                            <i class="fas {mission.icon}"></i>
+                        </div>
+                        <div class="m-details">
+                            <h4>{mission.title}</h4>
+                            <p>{mission.subtitle}</p>
+                            <div class="m-category">{mission.category}</div>
+                        </div>
+                    </div>
                 {/each}
             </div>
-            <div class="stats-row">
-                <div class="stat-row">
-                    <i class="fas fa-fire"></i> Streak: {progressData.streak}d
-                </div>
-                <div class="stat-row">
-                    <i class="fas fa-gem"></i> Points: {progressData.points}
-                </div>
-            </div>
         </section>
+    {/if}
 
-        <div class="tabs">
-            <button
-                class="tab {selectedTab === 'today' ? 'active' : ''}"
-                on:click={() => (selectedTab = "today")}
-            >
-                Today's Missions
-            </button>
-            <button
-                class="tab {selectedTab === 'completed' ? 'active' : ''}"
-                on:click={() => (selectedTab = "completed")}
-            >
-                Completed
-            </button>
-            <button
-                class="tab {selectedTab === 'upcoming' ? 'active' : ''}"
-                on:click={() => (selectedTab = "upcoming")}
-            >
-                Upcoming
-            </button>
+    {#if selectedTab === "completed"}
+        <section class="section mission-section" transition:fade>
+            {#if completedMissions.length > 0}
+                {#each completedMissions as mission}
+                    <div
+                        class="mission-item completed"
+                        on:click={() => openMissionDetails(mission)}
+                        on:keydown={(e) =>
+                            e.key === "Enter" && openMissionDetails(mission)}
+                        tabindex="0"
+                        role="button"
+                        aria-label="View details for completed mission {mission.title}"
+                    >
+                        <div class="m-icon" style:background={mission.color}>
+                            <i class="fas {mission.icon}"></i>
+                        </div>
+                        <div class="m-details">
+                            <h4>{mission.title}</h4>
+                            <p>{mission.subtitle}</p>
+                            <div class="m-category">{mission.category}</div>
+                        </div>
+                        <div class="completion-badge">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                {/each}
+            {:else}
+                <div class="empty-state">
+                    <i class="fas fa-tasks"></i>
+                    <p>No completed missions yet. Start with something easy!</p>
+                </div>
+            {/if}
+        </section>
+    {/if}
+
+    {#if selectedTab === "upcoming"}
+        <section class="section mission-section" transition:fade>
+            {#if upcomingMissions.length > 0}
+                {#each upcomingMissions as mission}
+                    <div class="mission-item upcoming">
+                        <div class="m-icon" style:background={mission.color}>
+                            <i class="fas {mission.icon}"></i>
+                        </div>
+                        <div class="m-details">
+                            <h4>{mission.title}</h4>
+                            <p>{mission.subtitle}</p>
+                            <div class="m-category">{mission.category}</div>
+                        </div>
+                        <div class="unlock-time">
+                            <i class="fas fa-clock"></i>
+                            <span>{mission.timeToUnlock}</span>
+                        </div>
+                    </div>
+                {/each}
+            {:else}
+                <div class="empty-state">
+                    <i class="fas fa-calendar"></i>
+                    <p>No upcoming missions. Check back later!</p>
+                </div>
+            {/if}
+        </section>
+    {/if}
+
+    <section class="section card">
+        <div class="header-row">
+            <h3>Your Characters</h3>
+            <button class="btn-link" on:click={toggleRewards}>View All</button>
         </div>
-
-        {#if selectedTab === "today"}
-            <section class="section mission-section" transition:fade>
-                <div class="missions-grid">
-                    {#each todaysMissions as mission}
-                        <div
-                            class="mission-item"
-                            on:click={() => openMissionDetails(mission)}
-                            on:keydown={(e) =>
-                                e.key === "Enter" &&
-                                openMissionDetails(mission)}
-                            tabindex="0"
-                            role="button"
-                            aria-label="View details for {mission.title}"
-                        >
-                            <div
-                                class="m-icon"
-                                style:background={mission.color}
-                            >
-                                <i class="fas {mission.icon}"></i>
-                            </div>
-                            <div class="m-details">
-                                <h4>{mission.title}</h4>
-                                <p>{mission.subtitle}</p>
-                                <div class="m-category">{mission.category}</div>
-                            </div>
-                        </div>
-                    {/each}
+        <div class="characters-preview">
+            {#each characters
+                .filter((c) => c.unlocked)
+                .slice(0, 3) as character}
+                <div class="character">
+                    <div class="character-icon">{character.icon}</div>
+                    <div class="character-name">{character.name}</div>
+                    <div class="character-level">Lvl {character.level}</div>
                 </div>
-            </section>
-        {/if}
-
-        {#if selectedTab === "completed"}
-            <section class="section mission-section" transition:fade>
-                {#if completedMissions.length > 0}
-                    {#each completedMissions as mission}
-                        <div
-                            class="mission-item completed"
-                            on:click={() => openMissionDetails(mission)}
-                            on:keydown={(e) =>
-                                e.key === "Enter" &&
-                                openMissionDetails(mission)}
-                            tabindex="0"
-                            role="button"
-                            aria-label="View details for completed mission {mission.title}"
-                        >
-                            <div
-                                class="m-icon"
-                                style:background={mission.color}
-                            >
-                                <i class="fas {mission.icon}"></i>
-                            </div>
-                            <div class="m-details">
-                                <h4>{mission.title}</h4>
-                                <p>{mission.subtitle}</p>
-                                <div class="m-category">{mission.category}</div>
-                            </div>
-                            <div class="completion-badge">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
-                    {/each}
-                {:else}
-                    <div class="empty-state">
-                        <i class="fas fa-tasks"></i>
-                        <p>
-                            No completed missions yet. Start with something
-                            easy!
-                        </p>
-                    </div>
-                {/if}
-            </section>
-        {/if}
-
-        {#if selectedTab === "upcoming"}
-            <section class="section mission-section" transition:fade>
-                {#if upcomingMissions.length > 0}
-                    {#each upcomingMissions as mission}
-                        <div class="mission-item upcoming">
-                            <div
-                                class="m-icon"
-                                style:background={mission.color}
-                            >
-                                <i class="fas {mission.icon}"></i>
-                            </div>
-                            <div class="m-details">
-                                <h4>{mission.title}</h4>
-                                <p>{mission.subtitle}</p>
-                                <div class="m-category">{mission.category}</div>
-                            </div>
-                            <div class="unlock-time">
-                                <i class="fas fa-clock"></i>
-                                <span>{mission.timeToUnlock}</span>
-                            </div>
-                        </div>
-                    {/each}
-                {:else}
-                    <div class="empty-state">
-                        <i class="fas fa-calendar"></i>
-                        <p>No upcoming missions. Check back later!</p>
-                    </div>
-                {/if}
-            </section>
-        {/if}
-
-        <section class="section card">
-            <div class="header-row">
-                <h3>Your Characters</h3>
-                <button class="btn-link" on:click={toggleRewards}
-                    >View All</button
-                >
+            {/each}
+            <div class="character locked">
+                <div class="character-icon">❓</div>
+                <div class="character-name">???</div>
+                <div class="character-level">Locked</div>
             </div>
-            <div class="characters-preview">
-                {#each characters
-                    .filter((c) => c.unlocked)
-                    .slice(0, 3) as character}
-                    <div class="character">
-                        <div class="character-icon">{character.icon}</div>
-                        <div class="character-name">{character.name}</div>
-                        <div class="character-level">Lvl {character.level}</div>
-                    </div>
-                {/each}
-                <div class="character locked">
-                    <div class="character-icon">❓</div>
-                    <div class="character-name">???</div>
-                    <div class="character-level">Locked</div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
+</div>
+
+<nav class="nav-bar">
+    {#each navItems as nav}
+        <div
+            class="nav-item {nav.active ? 'active' : ''} {nav.isAdd
+                ? 'add'
+                : ''}"
+            on:click={() => handleNavClick(nav.label || "add")}
+            on:keydown={(e) =>
+                e.key === "Enter" && handleNavClick(nav.label || "add")}
+            tabindex="0"
+            role={nav.isAdd ? "button" : "link"}
+            aria-label={nav.isAdd
+                ? "Add new activity"
+                : `Navigate to ${nav.label}`}
+        >
+            <i class="fas {nav.icon}"></i>
+            {#if nav.label}<span>{nav.label}</span>{/if}
+        </div>
+    {/each}
+</nav>
+
+{#if toast.show}
+    <div
+        class="toast {toast.type}"
+        transition:scale={{ duration: 200, start: 0.8 }}
+    >
+        {toast.message}
     </div>
+{/if}
 
-    <nav class="nav-bar">
-        {#each navItems as nav}
-            <div
-                class="nav-item {nav.active ? 'active' : ''} {nav.isAdd
-                    ? 'add'
-                    : ''}"
-                on:click={() => handleNavClick(nav.label || "add")}
-                on:keydown={(e) =>
-                    e.key === "Enter" && handleNavClick(nav.label || "add")}
-                tabindex="0"
-                role={nav.isAdd ? "button" : "link"}
-                aria-label={nav.isAdd
-                    ? "Add new activity"
-                    : `Navigate to ${nav.label}`}
-            >
-                <i class="fas {nav.icon}"></i>
-                {#if nav.label}<span>{nav.label}</span>{/if}
-            </div>
-        {/each}
-    </nav>
-
-    {#if toast.show}
-        <div
-            class="toast {toast.type}"
-            transition:scale={{ duration: 200, start: 0.8 }}
-        >
-            {toast.message}
-        </div>
-    {/if}
-
-    {#if showMissionDetails}
-        <div
-            class="modal-overlay"
-            transition:fade={{ duration: 200 }}
-            on:click={() => (showMissionDetails = false)}
-        >
-            <div class="modal-content" on:click|stopPropagation>
-                {#if currentMission}
-                    <div
-                        class="modal-header"
-                        style:background={currentMission.color}
-                    >
-                        <i class="fas {currentMission.icon} modal-icon"></i>
-                        <h2>{currentMission.title}</h2>
-                        <button
-                            class="close-button"
-                            on:click={() => (showMissionDetails = false)}
-                        >
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="mission-description">
-                            {currentMission.description}
-                        </p>
-
-                        {#if currentMission.id === "water"}
-                            <div class="water-tracker">
-                                <h4>Water Tracker</h4>
-                                <div class="water-controls">
-                                    <button
-                                        class="water-btn"
-                                        on:click={() => updateWater(-1)}
-                                    >
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <div class="water-display">
-                                        {#each Array(totalWaterGoal) as _, i}
-                                            <div
-                                                class="water-glass {i <
-                                                waterGlasses
-                                                    ? 'filled'
-                                                    : ''}"
-                                            >
-                                                <i class="fas fa-tint"></i>
-                                            </div>
-                                        {/each}
-                                    </div>
-                                    <button
-                                        class="water-btn"
-                                        on:click={() => updateWater(1)}
-                                    >
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        {/if}
-
-                        {#if currentMission.id === "affirmation"}
-                            <div class="affirmation-section">
-                                <h4>Today's Affirmation</h4>
-                                <p class="affirmation-text">
-                                    "{affirmationText}"
-                                </p>
-                                <button
-                                    class="record-button {isSpeaking
-                                        ? 'recording'
-                                        : ''}"
-                                    on:click={startVoiceDetection}
-                                    disabled={isSpeaking}
-                                >
-                                    <i
-                                        class="fas {isSpeaking
-                                            ? 'fa-microphone-alt'
-                                            : 'fa-microphone'}"
-                                    ></i>
-                                    {isSpeaking
-                                        ? "Recording..."
-                                        : "Speak Affirmation"}
-                                </button>
-                            </div>
-                        {/if}
-
-                        {#if currentMission.id === "meal"}
-                            <div class="photo-section">
-                                <h4>Take a photo of your meal</h4>
-                                <div class="photo-placeholder">
-                                    <i class="fas fa-camera"></i>
-                                    <p>Tap to take photo</p>
-                                </div>
-                            </div>
-                        {/if}
-
-                        <div class="reward-info">
-                            <h4>Rewards</h4>
-                            <div class="reward-item">
-                                <span class="reward-icon">⭐</span>
-                                <span>{currentMission.reward} points</span>
-                            </div>
-                            {#if progressData.streak >= 3}
-                                <div class="reward-item streak-bonus">
-                                    <span class="reward-icon">🔥</span>
-                                    <span>+10 streak bonus</span>
-                                </div>
-                            {/if}
-                        </div>
-
-                        {#if !currentMission.completed}
-                            <button
-                                class="complete-button"
-                                on:click={() =>
-                                    completeMission(currentMission.id)}
-                            >
-                                Mark as Completed
-                            </button>
-                        {:else}
-                            <div class="mission-completed-badge">
-                                <i class="fas fa-check-circle"></i>
-                                Completed
-                            </div>
-                        {/if}
-                    </div>
-                {/if}
-            </div>
-        </div>
-    {/if}
-
-    {#if showRewards}
-        <div
-            class="modal-overlay"
-            transition:fade={{ duration: 200 }}
-            on:click={() => (showRewards = false)}
-        >
-            <div class="modal-content rewards-modal" on:click|stopPropagation>
-                <div class="modal-header">
-                    <h2>Character Collection</h2>
+{#if showMissionDetails}
+    <div
+        class="modal-overlay"
+        transition:fade={{ duration: 200 }}
+        on:click={() => (showMissionDetails = false)}
+    >
+        <div class="modal-content" on:click|stopPropagation>
+            {#if currentMission}
+                <div
+                    class="modal-header"
+                    style:background={currentMission.color}
+                >
+                    <i class="fas {currentMission.icon} modal-icon"></i>
+                    <h2>{currentMission.title}</h2>
                     <button
                         class="close-button"
-                        on:click={() => (showRewards = false)}
+                        on:click={() => (showMissionDetails = false)}
                     >
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="characters-grid">
-                        {#each characters as character}
-                            <div
-                                class="character-card {character.unlocked
-                                    ? ''
-                                    : 'locked'}"
-                            >
-                                <div class="character-icon">
-                                    {character.unlocked ? character.icon : "❓"}
+                    <p class="mission-description">
+                        {currentMission.description}
+                    </p>
+
+                    {#if currentMission.id === "water"}
+                        <div class="water-tracker">
+                            <h4>Water Tracker</h4>
+                            <div class="water-controls">
+                                <button
+                                    class="water-btn"
+                                    on:click={() => updateWater(-1)}
+                                >
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="water-display">
+                                    {#each Array(totalWaterGoal) as _, i}
+                                        <div
+                                            class="water-glass {i < waterGlasses
+                                                ? 'filled'
+                                                : ''}"
+                                        >
+                                            <i class="fas fa-tint"></i>
+                                        </div>
+                                    {/each}
                                 </div>
-                                <div class="character-name">
-                                    {character.unlocked
-                                        ? character.name
-                                        : "Locked"}
-                                </div>
-                                {#if character.unlocked}
-                                    <div class="character-level">
-                                        Level {character.level}
-                                    </div>
-                                {:else}
-                                    <div class="unlock-hint">
-                                        Keep completing missions to unlock
-                                    </div>
-                                {/if}
+                                <button
+                                    class="water-btn"
+                                    on:click={() => updateWater(1)}
+                                >
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </div>
-                        {/each}
+                        </div>
+                    {/if}
+
+                    {#if currentMission.id === "affirmation"}
+                        <div class="affirmation-section">
+                            <h4>Today's Affirmation</h4>
+                            <p class="affirmation-text">
+                                "{affirmationText}"
+                            </p>
+                            <button
+                                class="record-button {isSpeaking
+                                    ? 'recording'
+                                    : ''}"
+                                on:click={startVoiceDetection}
+                                disabled={isSpeaking}
+                            >
+                                <i
+                                    class="fas {isSpeaking
+                                        ? 'fa-microphone-alt'
+                                        : 'fa-microphone'}"
+                                ></i>
+                                {isSpeaking
+                                    ? "Recording..."
+                                    : "Speak Affirmation"}
+                            </button>
+                        </div>
+                    {/if}
+
+                    {#if currentMission.id === "meal"}
+                        <div class="photo-section">
+                            <h4>Take a photo of your meal</h4>
+                            <div class="photo-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <p>Tap to take photo</p>
+                            </div>
+                        </div>
+                    {/if}
+
+                    <div class="reward-info">
+                        <h4>Rewards</h4>
+                        <div class="reward-item">
+                            <span class="reward-icon">⭐</span>
+                            <span>{currentMission.reward} points</span>
+                        </div>
+                        {#if progressData.streak >= 3}
+                            <div class="reward-item streak-bonus">
+                                <span class="reward-icon">🔥</span>
+                                <span>+10 streak bonus</span>
+                            </div>
+                        {/if}
                     </div>
+
+                    {#if !currentMission.completed}
+                        <button
+                            class="complete-button"
+                            on:click={() => completeMission(currentMission.id)}
+                        >
+                            Mark as Completed
+                        </button>
+                    {:else}
+                        <div class="mission-completed-badge">
+                            <i class="fas fa-check-circle"></i>
+                            Completed
+                        </div>
+                    {/if}
+                </div>
+            {/if}
+        </div>
+    </div>
+{/if}
+
+{#if showRewards}
+    <div
+        class="modal-overlay"
+        transition:fade={{ duration: 200 }}
+        on:click={() => (showRewards = false)}
+    >
+        <div class="modal-content rewards-modal" on:click|stopPropagation>
+            <div class="modal-header">
+                <h2>Character Collection</h2>
+                <button
+                    class="close-button"
+                    on:click={() => (showRewards = false)}
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="characters-grid">
+                    {#each characters as character}
+                        <div
+                            class="character-card {character.unlocked
+                                ? ''
+                                : 'locked'}"
+                        >
+                            <div class="character-icon">
+                                {character.unlocked ? character.icon : "❓"}
+                            </div>
+                            <div class="character-name">
+                                {character.unlocked ? character.name : "Locked"}
+                            </div>
+                            {#if character.unlocked}
+                                <div class="character-level">
+                                    Level {character.level}
+                                </div>
+                            {:else}
+                                <div class="unlock-hint">
+                                    Keep completing missions to unlock
+                                </div>
+                            {/if}
+                        </div>
+                    {/each}
                 </div>
             </div>
         </div>
-    {/if}
-</div>
+    </div>
+{/if}
 
 <style>
     :global(*) {
@@ -1273,10 +1237,10 @@
     }
 
     .nav-bar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        position: fixed; /* Makes the element stick to the viewport or nearest positioned ancestor */
+        bottom: 0; /* Positions it at the bottom edge */
+        left: 0; /* Aligns it to the left edge */
+        right: 0; /* Aligns it to the right edge (makes it span the width) */
         height: 70px;
         background: rgba(255, 255, 255, 0.9);
         display: flex;
@@ -1284,6 +1248,7 @@
         align-items: center;
         border-top: 1px solid var(--border);
         backdrop-filter: blur(8px);
+        z-index: 100; /* Ensures it stays above other content */
     }
     .nav-item {
         display: flex;
@@ -1646,4 +1611,3 @@
         padding: 0;
     }
 </style>
-
