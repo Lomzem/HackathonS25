@@ -12,6 +12,7 @@ https://svelte-clerk.netlify.app/ssr/quickstart.html
 -->
 
 <script lang="ts">
+  import "./global.css";
 	import type { Snippet } from 'svelte';
 	import { ClerkProvider } from 'svelte-clerk';
 
