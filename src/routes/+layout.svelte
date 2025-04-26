@@ -1,24 +1,35 @@
-<!--
-The <ClerkProvider> component wraps the entire application and provides 
-context for user authentication. It ensures that all child components 
-have access to Clerk's authentication state, session, and user data.
-
-This is required for using Clerk's prebuilt components, runes, and helpers 
-throughout the app. All components that rely on Clerk must be nested 
-within this provider.
-
-For more details, refer to the Svelte Clerk documentation:
-https://svelte-clerk.netlify.app/ssr/quickstart.html
--->
-
 <script lang="ts">
-  import "./global.css";
-	import type { Snippet } from 'svelte';
-	import { ClerkProvider } from 'svelte-clerk';
-
-	const { children }: { children: Snippet } = $props();
-</script>
-
-<ClerkProvider>
-	{@render children()}
-</ClerkProvider>
+    import "./global.css";
+    import { ClerkProvider } from 'svelte-clerk';
+    import Header from './components/Header.svelte';
+  
+    const { children } = $props();
+  </script>
+  
+  <ClerkProvider publishableKey={import.meta.env.PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <div class="app-container">
+      <Header />
+      <main class="main-content">
+        {@render children()}
+      </main>
+    </div>
+  </ClerkProvider>
+  
+  <style>
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: hsl(var(--color-background));
+      color: hsl(var(--color-foreground));
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+  </style>
