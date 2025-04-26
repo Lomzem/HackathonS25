@@ -2,48 +2,43 @@
     import { goto } from "$app/navigation";
 </script>
 
-<div class="device">
-    <div class="screen">
-        <section class="mobile-landing">
-            <div class="logo">🩺</div>
-            <h1 class="title">Health Quest</h1>
-            <p class="tagline">
-                Turn self-care into an adventure. Complete missions, earn
-                rewards, and level up your wellbeing!
-            </p>
+<div class="screen">
+    <section class="mobile-landing">
+        <div class="logo">🩺</div>
+        <h1 class="title">Health Quest</h1>
+        <p class="tagline">
+            Turn self-care into an adventure. Complete missions, earn rewards,
+            and level up your wellbeing!
+        </p>
 
-            <div class="features">
-                <div class="feature">
-                    <span class="feature-icon">💧</span>
-                    <span class="feature-text">Hydration</span>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">🧘</span>
-                    <span class="feature-text">Meditation</span>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">📝</span>
-                    <span class="feature-text">Journal</span>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">✨</span>
-                    <span class="feature-text">Affirmations</span>
-                </div>
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">💧</span>
+                <span class="feature-text">Hydration</span>
             </div>
+            <div class="feature">
+                <span class="feature-icon">🧘</span>
+                <span class="feature-text">Meditation</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📝</span>
+                <span class="feature-text">Journal</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✨</span>
+                <span class="feature-text">Affirmations</span>
+            </div>
+        </div>
 
-            <div class="button-group">
-                <button class="btn primary" on:click={() => goto("./sign-in")}>
-                    Login
-                </button>
-                <button
-                    class="btn secondary"
-                    on:click={() => goto("./sign-up")}
-                >
-                    Create Account
-                </button>
-            </div>
-        </section>
-    </div>
+        <div class="button-group">
+            <button class="btn primary" on:click={() => goto("./sign-in")}>
+                Login
+            </button>
+            <button class="btn secondary" on:click={() => goto("./sign-up")}>
+                Create Account
+            </button>
+        </div>
+    </section>
 </div>
 
 <style>
@@ -93,7 +88,6 @@
     .screen {
         width: 100%;
         height: 100%;
-        background: #fff;
         border-radius: 44px;
         overflow: hidden;
         display: flex;
@@ -101,17 +95,11 @@
     }
 
     .screen .mobile-landing {
-        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 1.5rem;
-        background: linear-gradient(
-            135deg,
-            hsl(190, 85%, 93%),
-            hsl(250, 85%, 93%)
-        );
         text-align: center;
         color: hsl(var(--color-foreground), 1);
     }
