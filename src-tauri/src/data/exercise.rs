@@ -60,7 +60,7 @@ impl ToKey for ExerciseType {
 }
 
 fn _add_exercise(exercise: Exercise, db: &Database) -> Result<(), String> {
-    log::info!("Adding exercise: {:?}", exercise);
+    log::info!("Adding exercise: {exercise:?}");
     let rw = db
         .rw_transaction()
         .expect("Failed to create a rw transaction");
@@ -88,7 +88,7 @@ fn _read_exercise(db: &Database) -> Vec<Exercise> {
 
 #[tauri::command]
 pub fn add_exercise(exercise: ExerciseBuilder, db: tauri::State<Database>) -> Result<(), String> {
-    log::info!("Adding exercise: {:?}", exercise);
+    log::info!("Adding exercise: {exercise:?}");
     _add_exercise(exercise.build(), db.inner())
 }
 

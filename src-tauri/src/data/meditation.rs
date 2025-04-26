@@ -18,7 +18,7 @@ pub enum Styles {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-#[native_model(id = 1, version = 1)]
+#[native_model(id = 2, version = 1)]
 #[native_db]
 pub struct Meditation {
     #[primary_key]
@@ -31,7 +31,7 @@ pub struct Meditation {
 }
 
 impl Meditation {
-    fn defaults() -> Vec<Self> {
+    pub fn defaults() -> Vec<Self> {
         vec![
             Self {
                 id: Uuid::new_v4().into(),
