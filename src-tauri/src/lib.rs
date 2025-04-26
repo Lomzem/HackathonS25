@@ -8,6 +8,7 @@ use data::exercise::add_exercise;
 use data::meditation::{list_meditations, toggle_fav_meditation};
 use native_db::Database;
 mod types;
+use tauri::Manager;
 use tauri_plugin_fs::FsExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -22,9 +23,10 @@ pub fn run() {
                         .build(),
                 )?;
             }
+            let path = app.path().resolve("mind-quest", tauri::path::BaseDirectory::LocalData).unwrap();
             let scope = app.fs_scope();
             scope
-                .allow_directory("/mind-quest", false)
+                .allow_directory(path, false)
                 .expect("Cannot get scope");
             Ok(())
         })
