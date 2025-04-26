@@ -5,10 +5,14 @@
         title,
         description,
         favorited,
+        minuteDuration,
+        secondDuration,
     }: {
         title: string;
         description: string;
         favorited: boolean;
+        minuteDuration: number;
+        secondDuration: number;
     } = $props();
 </script>
 
@@ -16,8 +20,15 @@
     <div class="card-content">
         <h2>{title}</h2>
         <p>{description}</p>
+        <p class="duration">
+            {minuteDuration}:{String(secondDuration).padStart(2, "0")}
+        </p>
     </div>
-    <HeartIcon color={favorited ? "#ff0000" : "#000000"} />
+    {#if favorited}
+        <HeartIcon color="#ff0000" fill={favorited ? "#ff0000" : ""} />
+    {:else}
+        <HeartIcon />
+    {/if}
 </card>
 
 <style>
@@ -31,6 +42,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .duration {
+        color: var(--color-primary);
     }
     h2 {
         font-weight: 400;
