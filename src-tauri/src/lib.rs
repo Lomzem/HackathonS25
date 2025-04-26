@@ -1,4 +1,6 @@
+#![feature(iterator_try_collect)]
 mod data;
+mod types;
 use tauri_plugin_fs::FsExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
