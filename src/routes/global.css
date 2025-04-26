@@ -46,7 +46,6 @@ body {
     height: 100dvh;
     width: 100dvw;
     line-height: 1.5;
-    /* Improve text rendering */
     -webkit-font-smoothing: antialiased;
     font-family: var(--font-family);
 }
