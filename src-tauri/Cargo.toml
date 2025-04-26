@@ -24,3 +24,6 @@ log = "0.4"
 tauri = { version = "2.5.0", features = [] }
 tauri-plugin-log = "2.0.0-rc"
 tauri-plugin-fs = "2.2.1"
+native_db = "0.8.1"
+chrono = { version = "0.4.40", features = ["serde"] }
+native_model = "0.4.20"

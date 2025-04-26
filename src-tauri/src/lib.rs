@@ -1,3 +1,4 @@
+mod data;
 use tauri_plugin_fs::FsExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
