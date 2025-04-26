@@ -2,11 +2,13 @@ use crate::types::Id;
 use native_db::{native_db, Database, ToKey};
 use native_model::{native_model, Model};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Styles {
     BodyScan,
-    Breath,
+    Breathwork,
+    Mindfulness,
     Visualization,
     SelfCompassion,
 }
@@ -17,16 +19,23 @@ pub enum Styles {
 pub struct Meditation {
     #[primary_key]
     pub id: Id,
-    pub meditaion_style: Styles,
+    pub meditaion_style: Vec<Styles>,
     pub uri: String,
-    pub file_name: String,
+    pub name: String,
     pub is_favorite: bool,
     pub length: u32,
 }
 
 impl Meditation {
     fn defaults() -> Vec<Self> {
-        vec![todo!()]
+        vec![Self {
+            id: Uuid::new_v4().into(),
+            uri: "https://mind-quest.werdxz.info/meditations/01_Breathing_Meditation.mp3".into(),
+            name: "Breathing Meditation".into(),
+            meditaion_style: vec![Styles::Breathwork, Styles::Mindfulness],
+            is_favorite: false,
+            length: 331,
+        }]
     }
 }
 
