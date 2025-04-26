@@ -8,6 +8,7 @@
         UserButton,
     } from "svelte-clerk";
     import { slide } from "svelte/transition";
+    import { goto } from "$app/navigation";
 
     let progressData = {
         completed: 4,
@@ -68,6 +69,9 @@
     const handleNavClick = (name: string) => {
         if (name === "add") {
             showToast("Create a new mission");
+        } else if (name === "Discover") {
+            showToast(`Navigating to ${name}`);
+            goto('/all_missions');
         } else {
             showToast(`Navigating to ${name}`);
         }
